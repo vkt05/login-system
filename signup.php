@@ -1,10 +1,5 @@
 <?php
-  $server = "localhost";
-  $username="root";
-  $password="";
-  $database="cust_data";
-  $connect = mysqli_connect($server,$username,$password,$database);
-  global $value;
+ require './partials/connection.php';
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +12,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="nav">
     <?php
       require "./partials/navbar.php";
     ?>
@@ -34,13 +29,12 @@
   }
 
   else{
-
     if($_SERVER['REQUEST_METHOD']=='POST'){
 
       $email=$_POST['email'];
       $pass=$_POST['password'];
       $cpass=$_POST['cpassword'];
-
+      $value="";
       if ($pass==$cpass) {
 
         if ( $email!="" && $pass!="") { 
@@ -63,7 +57,7 @@
                       <strong>Sorry!</strong> We regret we are facing some technical issues, we fix if ASAP!.
                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>';
-
+                    $value="";
             }
           }  
           catch(mysqli_sql_exception){
@@ -93,13 +87,6 @@
       }
 
 
-    }
-
-    else{
-      echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                      <strong>Sorry!</strong> We regret we are facing some technical issues, we fix if ASAP!.
-                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>';
     }
     
   }
