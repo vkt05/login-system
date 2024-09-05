@@ -37,21 +37,37 @@ $_SESSION['login'] = false;
 
         if ($email != "" && $pass != "") {
 
-          $sql = "select * from data where Email='$email' and Password='$pass'";
+          $sql = "select * from data where Email='$email'";
           $result = mysqli_query($connect, $sql);
-          $rows = mysqli_num_rows($result);
-          $value = "";
-          if ($rows > 0) {
-            $_SESSION['email'] = $email;
-            $_SESSION['login'] = true;
-            header("location: /loginSystem/index.php");
-          } else {
+          
+          while ($db_data=mysqli_fetch_assoc($result)) {
 
-            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            if (password_verify($pass,$db_data['Password'])) {
+
+              $rows = mysqli_num_rows($result);
+              $value = "";
+              if ($rows==1) {
+                $_SESSION['email'] = $email;
+                $_SESSION['login'] = true;
+                header("location: /loginSystem/index.php");
+              } 
+              else {
+
+                  echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                       <strong>Sorry!</strong> Invaild Credentials.
                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>';
+              }
+            }
+            else {
+
+              echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <strong>Sorry!</strong> Invaild Credentials.
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+            }
           }
+          
         } else {
           echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
           <strong>Warning!</strong> Input fields can not be empty, Please fill properly.

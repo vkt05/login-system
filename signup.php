@@ -39,7 +39,7 @@
 
         if ( $email!="" && $pass!="") { 
 
-          $sql="insert into data (Email,Password) values ('".$email."','".$pass."')";
+          $sql="insert into data (Email,Password) values ('".$email."','".password_hash($pass,PASSWORD_DEFAULT)."')";
           try {
             $result=mysqli_query($connect,$sql);
             $value="";
